@@ -1,20 +1,19 @@
-import os
-import cv2
-import toml
 import argparse
-import numpy as np
 import json
-
-import torch
-from torch.nn import functional as F
-import torchvision
-
-import utils
-from   utils import CONFIG
-import networks
-from tqdm import tqdm
-from fvcore.nn import FlopCountAnalysis
+import os
 import sys
+
+import cv2
+import numpy as np
+import toml
+import torch
+import torchvision
+from torch.nn import functional as F
+from tqdm import tqdm
+
+import networks
+import utils
+from utils import CONFIG
 
 sys.path.insert(0, './segment-anything')
 sys.path.insert(0, './GroundingDINO')
@@ -163,7 +162,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, default='config/MAM-ViTB-8gpu.toml')
     parser.add_argument('--benchmark', type=str, default='him2k', choices=['him2k', 'him2k_comp', 'rwp636', 'ppm100', 'am2k', 'pm10k', 'rw100'])
-    parser.add_argument('--checkpoint', type=str, default='checkpoints/mam_sam_vitb.pth',
+    parser.add_argument('--checkpoint', type=str, default='F:\Github\Matting-Anything\checkpoints\mam_vitb.pth',
                         help="path of checkpoint")
     parser.add_argument('--image-ext', type=str, default='.jpg', help="input image ext")
     parser.add_argument('--mask-ext', type=str, default='.png', help="input mask ext")

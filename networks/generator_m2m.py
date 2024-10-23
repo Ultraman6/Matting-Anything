@@ -18,11 +18,11 @@ class sam_m2m(nn.Module):
             raise NotImplementedError("Unknown M2M {}".format(m2m))
         self.m2m = m2ms.__dict__[m2m](nc=256)
         if seg == 'sam_vit_b':
-            self.seg_model = sam_model_registry['vit_b'](checkpoint='segment-anything/checkpoints/sam_vit_b_01ec64.pth')
+            self.seg_model = sam_model_registry['vit_b'](checkpoint="E:\models\AutoGuardian\sam\segment_anything\sam_vit_b_01ec64.pth")
         elif seg == 'sam_vit_l':
-            self.seg_model = sam_model_registry['vit_l'](checkpoint='segment-anything/checkpoints/sam_vit_l_0b3195.pth')
+            self.seg_model = sam_model_registry['vit_l'](checkpoint="E:\models\AutoGuardian\sam\segment_anything\sam_vit_l_0b3195.pth")
         elif seg == 'sam_vit_h':
-            self.seg_model = sam_model_registry['vit_h'](checkpoint='segment-anything/checkpoints/sam_vit_h_4b8939.pth')
+            self.seg_model = sam_model_registry['vit_h'](checkpoint="E:\models\AutoGuardian\sam\segment_anything\sam_vit_h_4b8939.pth")
         self.seg_model.eval()
 
     def forward(self, image, guidance):

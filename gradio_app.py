@@ -33,7 +33,7 @@ transform = ResizeLongestSide(1024)
 PALETTE_back = (51, 255, 146)
 
 GROUNDING_DINO_CONFIG_PATH = "GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
-GROUNDING_DINO_CHECKPOINT_PATH = "checkpoints/groundingdino_swint_ogc.pth"
+GROUNDING_DINO_CHECKPOINT_PATH = "E:\models\AutoGuardian\world\dino\GroundingDINO-T.pth"
 mam_checkpoint="checkpoints/mam_vitb.pth"
 output_dir="outputs"
 device="cuda"
@@ -54,7 +54,7 @@ generator = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v
 generator.to(device)
 
 def run_grounded_sam(input_image, text_prompt, task_type, background_prompt, background_type, box_threshold, text_threshold, iou_threshold, scribble_mode, guidance_mode):
-
+    print(1)
     global groundingdino_model, sam_predictor, generator
 
     # make dir
@@ -199,8 +199,8 @@ def run_grounded_sam(input_image, text_prompt, task_type, background_prompt, bac
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("MAM demo", add_help=True)
-    parser.add_argument("--debug", action="store_true", help="using debug mode")
-    parser.add_argument("--share", action="store_true", help="share the app")
+    parser.add_argument("--debug", default=True)
+    parser.add_argument("--share", default=True)
     parser.add_argument('--port', type=int, default=7589, help='port to run the server')
     parser.add_argument('--no-gradio-queue', action="store_true", help='path to the SAM checkpoint')
     args = parser.parse_args()
@@ -239,9 +239,9 @@ if __name__ == "__main__":
             with gr.Column():
                 input_image = gr.Image(source='upload', type="numpy", value="assets/demo.jpg", tool="sketch")
                 task_type = gr.Dropdown(["scribble_point", "scribble_box", "text"], value="text", label="Prompt type")
-                text_prompt = gr.Textbox(label="Text prompt", placeholder="the girl in the middle")
+                text_prompt = gr.Textbox(label="Text prompt", value="the girl in the middle", placeholder="the girl in the middle")
                 background_type = gr.Dropdown(["generated_by_text", "real_world_sample"], value="generated_by_text", label="Background type")
-                background_prompt = gr.Textbox(label="Background prompt", placeholder="downtown area in New York")
+                background_prompt = gr.Textbox(label="Background prompt", value="downtown area in New York", placeholder="downtown area in New York")
                 run_button = gr.Button(label="Run")
                 with gr.Accordion("Advanced options", open=False):
                     box_threshold = gr.Slider(
@@ -266,7 +266,8 @@ if __name__ == "__main__":
                 ).style(preview=True, grid=3, object_fit="scale-down")
 
         run_button.click(fn=run_grounded_sam, inputs=[
-                        input_image, text_prompt, task_type, background_prompt, background_type, box_threshold, text_threshold, iou_threshold, scribble_mode, guidance_mode], outputs=gallery)
+                        input_image, text_prompt, task_type, background_prompt, background_type,
+            box_threshold, text_threshold, iou_threshold, scribble_mode, guidance_mode], outputs=gallery)
 
-    block.queue(concurrency_count=100)
-    block.launch(server_name='0.0.0.0', server_port=args.port, debug=args.debug, share=args.share)
+    # block.queue(concurrency_count=100)
+    block.launch(server_name='127.0.0.1', server_port=args.port, debug=args.debug, share=args.share)
